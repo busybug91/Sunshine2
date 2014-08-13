@@ -1,6 +1,4 @@
 package com.example.nitin.sunshine;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,11 +93,6 @@ public class WeatherDataParser {
 
             highAndLow = formatHighLows(high, low);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
-        }
-        for(String s:resultStrs)
-        {
-            Log.v("From Parser",s);
-
         }
 
         return resultStrs;

@@ -50,7 +50,6 @@ public class ForecastFragment extends Fragment {
             int id= item.getItemId();
         if(id==R.id.action_refresh) {
             FetchWeatherTask fetchWeatherTask= new FetchWeatherTask();
-            Log.v(TAG, "Starting the background task");
             fetchWeatherTask.execute("85281");
             return true;
 
@@ -136,7 +135,6 @@ public class ForecastFragment extends Fragment {
                 }
                 if (buffer.length() > 0) {
                     jsonResponse = buffer.toString();
-                    Log.v(TAG,jsonResponse);
                     //Parsing the jsonResponse
 
                 }
