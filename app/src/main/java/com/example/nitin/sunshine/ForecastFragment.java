@@ -1,5 +1,6 @@
 package com.example.nitin.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -49,7 +52,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
             int id= item.getItemId();
         if(id==R.id.action_refresh) {
-            FetchWeatherTask fetchWeatherTask= new FetchWeatherTask();
+            FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
             fetchWeatherTask.execute("85281");
             return true;
 
@@ -74,6 +77,17 @@ public class ForecastFragment extends Fragment {
         adapter= new ArrayAdapter<String>(getActivity(),R.layout.list_item_forecast,R.id.list_item_forecast_textView,weatherList);
         ListView listView=(ListView)rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(),adapter.getItem(position),Toast.LENGTH_LONG).show();
+                Intent intent= new Intent(getActivity(),DetailedActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT,adapter.getItem(position));
+                startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 
@@ -87,6 +101,7 @@ public class ForecastFragment extends Fragment {
             if(strings!=null) {
                adapter.clear();
               adapter.addAll(Arrays.asList(strings));
+                adapter.setNotifyOnChange(true);
             }
 
         }
