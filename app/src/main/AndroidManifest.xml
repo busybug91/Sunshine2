@@ -32,6 +32,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nitin.sunshine.MyActivity" />
         </activity>
+        <activity
+            android:name=".WeatherDataParser"
+            android:label="@string/title_activity_weather_data_parser" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

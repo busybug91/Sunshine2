@@ -1,9 +1,11 @@
 package com.example.nitin.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,28 +53,31 @@ public class ForecastFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
             int id= item.getItemId();
-        if(id==R.id.action_refresh) {
-            FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
-            fetchWeatherTask.execute("85281");
-            return true;
-
-        }return super.onOptionsItemSelected(item);
+      return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.v(TAG,"Update weather called");
+        updateWeather();
+    }
+
+    public void updateWeather()
+    {
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location=sharedPreferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+        fetchWeatherTask.execute(location);
+        return;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my, container, false);
-        String weather[]={"Today- Sunny 8/11",
-                "Tuesday- Sunny 8/11",
-                "Wednesday- Sunny 8/12",
-                "Thursday- Sunny 8/13",
-                "Friday- Sunny 8/14"};
+      //  String[] s={"asdf","asdf"};
 
-
-
-
-        List<String> weatherList= new ArrayList<String>(Arrays.asList(weather));
+        List<String> weatherList= new ArrayList<String>();
 //context, the row layout, TextView id int the row layout as ArrayAdapter will print a toString() of the object in the text view, list of objects
         adapter= new ArrayAdapter<String>(getActivity(),R.layout.list_item_forecast,R.id.list_item_forecast_textView,weatherList);
         ListView listView=(ListView)rootView.findViewById(R.id.listview_forecast);
@@ -173,7 +178,7 @@ public class ForecastFragment extends Fragment {
             }
             try{
 
-                WeatherDataParser parser= new WeatherDataParser();
+                WeatherDataParser parser= new WeatherDataParser(getActivity());
                 result=parser.getWeatherDataFromJson(jsonResponse, days);
                 return result;
             }
