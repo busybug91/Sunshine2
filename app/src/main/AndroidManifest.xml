@@ -36,6 +36,10 @@
             android:name=".WeatherDataParser"
             android:label="@string/title_activity_weather_data_parser" >
         </activity>
+        <provider
+            android:authorities="com.example.nitin.sunshine"
+            android:name=".data.WeatherProvider"
+            />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
